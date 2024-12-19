@@ -5,37 +5,24 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - "weaveworks/timber-wolf"
-      - "weaveworks/pesto"
-      - "weaveworks/wild-watermelon"
-      - "weaveworks/tangerine"
-    # Only do security updates not version updates.
-    open-pull-requests-limit: 0
+    groups:
+      all:
+        patterns: ["*"]
 
   # Maintain dependencies for backend
   - package-ecosystem: "gomod"
     directory: "/"
     schedule:
       interval: "daily"
-    reviewers:
-      - "weaveworks/timber-wolf"
-      - "weaveworks/pesto"
-      - "weaveworks/wild-watermelon"
-      - "weaveworks/tangerine"
-    # Only do security updates not version updates.
-    open-pull-requests-limit: 0
+    groups:
+      all:
+        patterns: ["*"]
 
   # maintain dependencies for github actions
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "weekly"
-    reviewers:
-      - "weaveworks/timber-wolf"
-      - "weaveworks/pesto"
-      - "weaveworks/wild-watermelon"
-      - "weaveworks/tangerine"
-    # Only do security updates not version updates.
-    open-pull-requests-limit: 0
-
+    groups:
+      all:
+        patterns: ["*"]
