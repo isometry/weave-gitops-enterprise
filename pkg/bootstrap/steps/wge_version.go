@@ -5,22 +5,13 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/weaveworks/weave-gitops-enterprise/pkg/bootstrap/utils"
 	"gopkg.in/yaml.v2"
-	k8s_client "sigs.k8s.io/controller-runtime/pkg/client"
 )
 
 // getWgeVersions gets the latest 3 available WGE versions from the helm repository
-func getWgeVersions(client k8s_client.Client) ([]string, error) {
-	entitlementSecret, err := utils.GetSecret(client, entitlementSecretName, WGEDefaultNamespace)
-	if err != nil {
-		return []string{}, err
-	}
-
-	username, password := string(entitlementSecret.Data["username"]), string(entitlementSecret.Data["password"])
-
+func getWgeVersions() ([]string, error) {
 	chartUrl := fmt.Sprintf("%s/index.yaml", wgeChartUrl)
-	versions, err := fetchHelmChartVersions(chartUrl, username, password)
+	versions, err := fetchHelmChartVersions(chartUrl)
 	if err != nil {
 		return []string{}, err
 	}
@@ -28,8 +19,8 @@ func getWgeVersions(client k8s_client.Client) ([]string, error) {
 }
 
 // fetchHelmChartVersions helper method to fetch wge helm chart versions.
-func fetchHelmChartVersions(chartUrl, username, password string) ([]string, error) {
-	bodyBytes, err := doBasicAuthGetRequest(chartUrl, username, password)
+func fetchHelmChartVersions(chartUrl string) ([]string, error) {
+	bodyBytes, err := doGetRequest(chartUrl)
 	if err != nil {
 		return []string{}, err
 	}
@@ -53,13 +44,12 @@ func fetchHelmChartVersions(chartUrl, username, password string) ([]string, erro
 	return versions, nil
 }
 
-func doBasicAuthGetRequest(url, username, password string) ([]byte, error) {
+func doGetRequest(url string) ([]byte, error) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return []byte{}, err
 
 	}
-	req.SetBasicAuth(username, password)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)

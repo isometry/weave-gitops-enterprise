@@ -42,7 +42,7 @@ func installPolicyAgent(input []StepInput, c *Config) ([]StepOutput, error) {
 	c.Logger.Warningf(" please note that the Policy Agent requires cert-manager to be installed!")
 
 	// download agent file
-	bodyBytes, err := doBasicAuthGetRequest(agentControllerURL, "", "")
+	bodyBytes, err := doGetRequest(agentControllerURL)
 	if err != nil {
 		return []StepOutput{}, fmt.Errorf("error getting Policy Agent HelmRelease: %v", err)
 	}

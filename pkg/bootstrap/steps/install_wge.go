@@ -7,7 +7,6 @@ import (
 	"time"
 
 	helmv2 "github.com/fluxcd/helm-controller/api/v2beta1"
-	"github.com/fluxcd/pkg/apis/meta"
 	sourcev1beta2 "github.com/fluxcd/source-controller/api/v1beta2"
 	"github.com/weaveworks/weave-gitops-enterprise/pkg/bootstrap/utils"
 	"github.com/weaveworks/weave-gitops/pkg/logger"
@@ -73,7 +72,7 @@ func NewWgeConfig(requestedWgeVersion string, client client.Client, fluxInstalle
 		}
 	}
 
-	allowedWgeVersions, err := getWgeVersions(client)
+	allowedWgeVersions, err := getWgeVersions()
 	if err != nil {
 		return WgeConfig{}, fmt.Errorf("error getting valid WGE versions: %v", err)
 	}
@@ -215,9 +214,6 @@ func constructWgeHelmRepository() (string, error) {
 			URL: wgeChartUrl,
 			Interval: v1.Duration{
 				Duration: time.Minute,
-			},
-			SecretRef: &meta.LocalObjectReference{
-				Name: entitlementSecretName,
 			},
 		},
 	}

@@ -139,7 +139,7 @@ func createWGEHelmReleaseFakeObject(version string) (helmv2.HelmRelease, error) 
 }
 
 func getControllerHelmReleaseTestFile(url string) string {
-	tfHelmFile, err := doBasicAuthGetRequest(url, "", "")
+	tfHelmFile, err := doGetRequest(url)
 	if err != nil {
 		fmt.Printf("error getting: %s HelmRelease: %v", url, err)
 		return ""

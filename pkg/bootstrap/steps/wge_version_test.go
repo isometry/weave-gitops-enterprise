@@ -11,12 +11,6 @@ import (
 
 func TestFetchHelmChart(t *testing.T) {
 	mockServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		username, password, ok := r.BasicAuth()
-		if !ok || username != "testuser" || password != "testpassword" {
-			w.WriteHeader(http.StatusUnauthorized)
-			return
-		}
-
 		_, _ = fmt.Fprintln(w, `entries:
   mccp:
   - version: 1.0.0
@@ -28,7 +22,7 @@ func TestFetchHelmChart(t *testing.T) {
 	}))
 	defer mockServer.Close()
 
-	versions, err := fetchHelmChartVersions(mockServer.URL, "testuser", "testpassword")
+	versions, err := fetchHelmChartVersions(mockServer.URL)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

@@ -40,7 +40,7 @@ func NewInstallTFControllerStep(config Config) BootstrapStep {
 func installTerraform(input []StepInput, c *Config) ([]StepOutput, error) {
 	c.Logger.Actionf(tfInstallInfoMsg)
 
-	bodyBytes, err := doBasicAuthGetRequest(tfControllerUrl, "", "")
+	bodyBytes, err := doGetRequest(tfControllerUrl)
 	if err != nil {
 		return []StepOutput{}, fmt.Errorf("error getting Terraform Controller HelmRelease: %v", err)
 	}
